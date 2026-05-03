@@ -1,0 +1,7 @@
+{
+  "name": "task-cli-toolkit",
+  "version": "1.0.0",
+  "description": "Skills, agents, and hooks for the task-cli project. Course starter plugin.",
+  "author": "Douglas Mun",
+  "homepage": "https://github.com/douglasmun/claude-code-course-starter"
+}
