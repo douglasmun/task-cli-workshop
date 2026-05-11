@@ -62,7 +62,7 @@ This `main` branch includes a complete course submission:
 - MCP configuration: `.mcp.json`
 - Plugin package: `plugin/`
 - Cowork context and plugin package: `cowork/`
-- CI/headless Claude workflow: `.github/workflows/claude-review.yml`
+- CI/headless Claude workflow: `.github/workflows/claude-review.yml` — requires `ANTHROPIC_API_KEY` secret (see [`.github/workflows/README.md`](.github/workflows/README.md))
 - Completion evidence: `docs/course/completion-matrix.md`
 
 Reviewers: run `npm test && npm run build` to confirm the code works, then cross-reference each item in `docs/course/completion-matrix.md` with the file path listed.
