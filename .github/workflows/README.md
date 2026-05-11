@@ -64,8 +64,9 @@ Triggers on every new GitHub Discussion post and sends an email to the course ow
 
 | Secret | Value |
 |---|---|
-| `NOTIFY_EMAIL_USER` | Your Yahoo email address (e.g. `douglasmun@yahoo.com`) |
+| `NOTIFY_EMAIL_USER` | Your Yahoo email address (e.g. `you@yahoo.com`) |
 | `NOTIFY_EMAIL_PASS` | Yahoo App Password — **not** your account password |
+| `NOTIFY_EMAIL_TO` | The recipient address for discussion alerts (can be the same as `NOTIFY_EMAIL_USER`) |
 
 ### How to create a Yahoo App Password
 
