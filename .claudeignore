@@ -1,5 +1,58 @@
-node_modules/
+# .claudeignore — keep these paths out of Claude Code's context window.
+# Syntax mirrors .gitignore. Claude will not read, index, or reference
+# any file matching a pattern here, even if asked directly.
+# See Module 10 (CLAUDE.md, Memory & Setup) for the full explanation.
+
+# ── Secrets and credentials ───────────────────────────────────────────────
+.env
+.env.*
+.env.local
+.env.production
+*.pem
+*.key
+*.p12
+secrets/
+credentials/
+
+# ── Build output ──────────────────────────────────────────────────────────
+# Compiled artefacts add noise and are derivable from src/ — skip them.
 dist/
+build/
+out/
+*.js.map
+
+# ── Dependencies ──────────────────────────────────────────────────────────
+# node_modules is large (~50 MB) and slows context loading significantly.
+node_modules/
+.pnp/
+.pnp.js
+bun.lock
+
+# ── Test coverage artefacts ───────────────────────────────────────────────
+coverage/
+.nyc_output/
+*.lcov
+
+# ── Runtime data ──────────────────────────────────────────────────────────
+# The CLI's live data file. Its contents change every run — including it
+# in context gives Claude stale or irrelevant task state.
 .task-cli-data.json
-*.env
+
+# ── OS and editor noise ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+
+# ── Claude Code internal state ────────────────────────────────────────────
+# Agent memories and session logs must not leak between agents or sessions.
+# Each agent reads its own MEMORY.md directly via its tools — it should
+# never see another agent's memory through the shared context window.
 .claude/memory/
+.claude/agent-memory/
+
+# ── Lab solutions ─────────────────────────────────────────────────────────
+# Uncomment if you add a solutions/ directory alongside the skeletons.
+# labs/*/solution/

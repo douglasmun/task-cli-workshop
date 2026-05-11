@@ -3,20 +3,31 @@
 A CLI task manager built progressively across the
 [Claude Code + Cowork Course](https://douglasmun.github.io/claude-code-course.html).
 
-## Branches
+## Milestone Branches
 
-Each branch represents a course milestone. Checkout the branch
-matching your current module:
+Each branch is a reference checkpoint for a specific course module.
+Check out the branch that matches where you are, compare it against
+your own work, then switch back to `main` (or your own branch).
 
-| Branch | Course Module | What's Added |
-|--------|--------------|--------------|
-| `milestone-1-scaffold` | Module 05 | Basic CLI: add, list, done |
-| `milestone-2-memory` | Module 10 | CLAUDE.md + .claudeignore |
-| `milestone-3-skills` | Module 11 | /add-feature skill with $ARGUMENTS |
-| `milestone-4-hooks` | Module 15 | Auto-format + safety hooks |
-| `milestone-5-agents` | Module 17 | test-reviewer agent with memory |
-| `milestone-6-plugin` | Module 21 | Full plugin package |
-| `main` | Complete | Everything + CI + Cowork files |
+```bash
+git checkout milestone-3-skills   # see the reference for Module 11
+git checkout main                 # return to the complete version
+```
+
+| Branch | Module | Module Title | What's in this branch |
+|--------|--------|--------------|----------------------|
+| `milestone-1-scaffold` | 05 | Install & First Run | Working CLI: `add`, `list`, `done` commands; `src/`, `__tests__/`, `package.json` |
+| `milestone-2-memory` | 10 | CLAUDE.md, Memory & Setup | `CLAUDE.md` with `@docs/architecture.md` ref; `.claudeignore`; `docs/architecture.md` |
+| `milestone-3-skills` | 11 | Custom Skills & `$ARGUMENTS` | `/add-feature` skill with `$ARGUMENTS`; `/pr-review` static skill; `.claude/skills/` directory |
+| `milestone-4-hooks` | 15 | Hooks & Safety Defaults | `format-file.sh` (PostToolUse); `block-dangerous-bash.sh` (PreToolUse); `.claude/settings.json` wiring |
+| `milestone-5-agents` | 17 | Custom Subagents & Agent Teams | `test-reviewer` agent (`memory: user`); `security-scanner` agent (`context: fork`); `review-suite` orchestration skill |
+| `milestone-6-plugin` | 21 | Build & Publish Your Plugin | Full `plugin/` package: all skills + hooks + agent bundled; `plugin/.claude-plugin/plugin.json` |
+| `main` | — | Complete submission | All of the above + CI workflow + Cowork files + community docs |
+
+> **Why six milestones?** The branches let you check your work against a
+> known-good reference at each stage without spoiling later modules.
+> Each branch builds on the previous — `milestone-3-skills` includes
+> everything from `milestone-2-memory`, and so on.
 
 ## Quick Start
 
@@ -56,8 +67,8 @@ claude                    # start a session
 This `main` branch includes a complete course submission:
 
 - Project memory: `CLAUDE.md`, `.claudeignore`, and `docs/architecture.md`
-- Custom skills: `.claude/skills/add-feature`, `pr-review`, `deploy-check`, and `generate-adr`
-- Custom agent: `.claude/agents/test-reviewer.md`
+- Custom skills: `.claude/skills/add-feature`, `pr-review`, `deploy-check`, `generate-adr`, and `review-suite` (orchestration)
+- Custom agents: `.claude/agents/test-reviewer.md` (`memory: user`) and `security-scanner.md` (`context: fork`); `review-suite` skill dispatches both in parallel
 - Hooks: `.claude/settings.json` plus reusable hook scripts in `.claude/hooks/`
 - MCP configuration: `.mcp.json`
 - Plugin package: `plugin/`
