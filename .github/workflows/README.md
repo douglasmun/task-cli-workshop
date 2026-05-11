@@ -55,3 +55,30 @@ Without a cap, a long diff or a verbose prompt can produce an unexpectedly large
 | `pull-requests: write` permission denied | Permissions key missing from workflow | Add the `permissions` block |
 | No output / empty review | Claude returned an empty response | Check that the prompt is non-empty and the diff is not empty |
 | Fork PR: secret not found | Fork PRs do not receive secrets by default | Use `pull_request_target` with manual approval or restrict to internal PRs |
+
+## discussion-notify.yml
+
+Triggers on every new GitHub Discussion post and sends an email to the course owner.
+
+### Required secrets (set in repo Settings → Secrets and variables → Actions)
+
+| Secret | Value |
+|---|---|
+| `NOTIFY_EMAIL_USER` | Your Yahoo email address (e.g. `douglasmun@yahoo.com`) |
+| `NOTIFY_EMAIL_PASS` | Yahoo App Password — **not** your account password |
+
+### How to create a Yahoo App Password
+
+1. Go to [Yahoo Account Security](https://login.yahoo.com/account/security)
+2. Sign in → scroll to "App passwords"  
+3. Click "Generate app password" → select "Other app" → name it "GitHub Actions"
+4. Copy the 16-character password — you only see it once
+5. Paste it as the `NOTIFY_EMAIL_PASS` secret in GitHub
+
+### Testing the workflow
+
+After adding secrets, open a test discussion in the repo. The workflow should fire within ~30 seconds and deliver an email within 1–2 minutes. Check Actions → Notify on New Discussion for run logs if no email arrives.
+
+### Alternative: GitHub's own email notifications
+
+If you prefer not to configure SMTP, go to GitHub.com → your profile → Settings → Notifications → "Discussions" → enable email notifications. This is simpler but sends all discussion notifications to your GitHub-registered email, not Yahoo specifically.

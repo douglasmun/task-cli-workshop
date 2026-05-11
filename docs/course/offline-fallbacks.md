@@ -61,3 +61,12 @@ claude --print "List all skills, hooks, and agents you can see in this project."
 ```
 
 Confirm the output lists `CLAUDE.md`, the skills in `.claude/skills/`, the hooks in `.claude/hooks/`, and the agent at `.claude/agents/test-reviewer.md`. This verifies the project is self-contained and reproducible in a fresh checkout without teammate coordination.
+
+## Getting Help
+
+If a fallback path doesn't work for your environment, post in [Q&A Discussions](https://github.com/douglasmun/claude-code-course-starter/discussions/categories/q-a) with:
+- Your OS and shell
+- The exact command you ran
+- The error output
+
+Include which fallback you were attempting (MCP / plugin / CI / Cowork / teammate).

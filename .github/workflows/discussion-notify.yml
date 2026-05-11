@@ -1,0 +1,34 @@
+name: Notify on New Discussion
+
+on:
+  discussion:
+    types: [created]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.mail.yahoo.com
+          server_port: 587
+          secure: false
+          username: ${{ secrets.NOTIFY_EMAIL_USER }}
+          password: ${{ secrets.NOTIFY_EMAIL_PASS }}
+          subject: "[Course] New discussion: ${{ github.event.discussion.title }}"
+          to: douglasmun@yahoo.com
+          from: ${{ secrets.NOTIFY_EMAIL_USER }}
+          body: |
+            A new discussion was posted in the Claude Code Course community.
+
+            Title:    ${{ github.event.discussion.title }}
+            Category: ${{ github.event.discussion.category.name }}
+            Author:   ${{ github.event.discussion.user.login }}
+            URL:      ${{ github.event.discussion.html_url }}
+
+            Body preview:
+            ${{ github.event.discussion.body }}
+
+            ---
+            Claude Code Course · github.com/douglasmun/claude-code-course-starter/discussions

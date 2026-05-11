@@ -69,6 +69,19 @@ Reviewers: run `npm test && npm run build` to confirm the code works, then cross
 
 ## Companion Resources
 
+- [Course Community (GitHub Discussions)](https://github.com/douglasmun/claude-code-course-starter/discussions) — ask questions, share your capstone, get unstuck
 - [Course](https://douglasmun.github.io/claude-code-course.html)
 - [Cheat Sheet](https://douglasmun.github.io/claude-code-cheatsheet-v1.0.html)
 - [Capstone Evidence Guide](docs/course/capstone-evidence-guide.md)
+
+## Community
+
+**GitHub Discussions:** [github.com/douglasmun/claude-code-course-starter/discussions](https://github.com/douglasmun/claude-code-course-starter/discussions)
+
+| Category | Use it for |
+|---|---|
+| [Q&A](https://github.com/douglasmun/claude-code-course-starter/discussions/categories/q-a) | Setup issues, concept questions, stuck on a module |
+| [Show & Tell](https://github.com/douglasmun/claude-code-course-starter/discussions/categories/show-and-tell) | Share your capstone, plugins you built, workflows you've automated |
+| [Ideas](https://github.com/douglasmun/claude-code-course-starter/discussions/categories/ideas) | Suggest course improvements, new labs, feature requests |
+
+Peer learning accelerates completion. If you're stuck, someone else has been stuck in the same place.

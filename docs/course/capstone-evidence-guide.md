@@ -34,3 +34,12 @@ find .claude plugin cowork .github/workflows -type f | sort | xargs -I{} sh -c '
 ```
 
 Share or attach `capstone-evidence-export.txt` with your submission. Reviewers can verify every artifact without checking out the repo.
+
+## Share Your Capstone
+
+Post your completed capstone in the [Show & Tell discussion](https://github.com/douglasmun/claude-code-course-starter/discussions/categories/show-and-tell). Include:
+- Your repo link (or a private Gist with the key files)
+- Which track you completed (Core / Professional / Native-Team)
+- One thing you would do differently
+
+Reading other students' capstones is one of the fastest ways to level up.
