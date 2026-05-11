@@ -53,3 +53,99 @@ Use this as the issue list for a future Claude Code fix pass.
 - The starter repo `main` branch satisfies the live capstone rubric.
 - The capstone evidence can be reviewed from files and command output without relying on screenshots.
 - Labs have sample inputs, expected outputs, and a minimal pass version.
+
+---
+
+## Revision History
+
+### Session 1 — May 2026 (P1 Bug Fix Pass)
+
+**Scope:** CI workflow correctness, email secret parameterisation, lab time accuracy, capstone-check hardening.
+
+| Item | What changed | File(s) |
+|------|-------------|---------|
+| CI review comment posting | Added `id: claude_review` step; captured output to `GITHUB_OUTPUT` via heredoc; added `gh pr comment` step with `GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}` | `.github/workflows/claude-review.yml` |
+| Email secret | Changed hardcoded `to: douglasmun@yahoo.com` → `to: ${{ secrets.NOTIFY_EMAIL_TO }}`; added secrets table to Module 20 | `.github/workflows/discussion-notify.yml`, `claude-code-course.html` |
+| capstone-check hardening | `checkPluginJson()` and `checkCoworkPlugin()` now validate required `name`/`version`/`author` fields; `checkGithubWorkflows()` asserts `ANTHROPIC_API_KEY` + `claude` present in at least one workflow | `scripts/capstone-check.js` |
+
+---
+
+### Session 2 — May 2026 (Hard Audit + Full Fix Pass)
+
+**Scope:** Full critical audit of the course and starter repo. 15 issues identified, all resolved across this session.
+
+#### What the audit found
+
+The course had three categories of problem:
+
+1. **Content honesty gaps** — unattributed statistics, iOS surface misconception, vague lab time estimates, skills described as "automated scripts" rather than "persistent prompts".
+2. **Scaffolding gaps** — placeholder lab sample files (lorem ipsum paragraphs, 2-IOC JSON), untyped skeleton functions, plugin skills that delegated to external paths (not self-contained).
+3. **Architecture gaps** — only one agent in the starter repo (no handoff pattern to demonstrate), no `.claudeignore`, README branch table with no module mapping or milestone explanations.
+
+#### Changes made to `claude-code-course-starter`
+
+**Lab sample files** (`labs/`)
+- Replaced 3 placeholder text files with 10 topically distinct cybersecurity documents (CVEs, threat actor profiles, incident reports, runbooks, advisories) in `lab-a-samples/` — designed for retrieval discrimination, not just tokenisation.
+- Expanded `lab-b-samples/mock-threat-intel.json` from 2 IOCs to 10, covering all IOC types (ip/domain/hash/url), three confidence tiers, and diverse threat actor tags.
+- Rewrote `lab-c-samples/` test scripts with proper expected stdout/returncode documentation and inline assertions.
+
+**Lab skeletons** (`labs/`)
+- `lab-a-skeleton/rag_skeleton.py`: full typed signatures, Args/Returns/Example docstrings, cosine_similarity extracted as separate function, implementation hints.
+- `lab-b-skeleton/pipeline_skeleton.py`: IOC and EnrichedIOC TypedDicts, CONFIDENCE_RANK dict, all four pipeline stages with detailed docstrings.
+- `lab-c-skeleton/sandbox_skeleton.py`: ALLOWED_COMMANDS as frozenset, is_allowed/run_sandboxed/run_with_audit with edge cases documented, self-test in main().
+
+**Plugin self-containment** (`plugin/skills/`)
+- All 5 SKILL.md files (add-feature, pr-review, deploy-check, generate-adr, deep-research) made fully self-contained — removed delegation to `.claude/skills/` paths.
+
+**Second agent + orchestration skill** (`.claude/`)
+- Added `security-scanner.md` agent: model haiku, memory: user, permissionMode: plan. Scans src/, hooks/, workflows/ for input validation, path traversal, shell injection, hardcoded secrets, dependency risk. Returns structured SECURITY SCAN REPORT.
+- Added `review-suite/SKILL.md` skill: context:fork, user-invocable. Orchestrates security-scanner + test-reviewer as parallel subagents, documents WHY two agents (different models, independent memories, no context pollution), synthesises go/no-go recommendation.
+
+**`.claudeignore`**
+- Expanded from 5-line stub to fully annotated 7-section file: secrets/credentials, build output, dependencies, coverage artefacts, runtime data (`.task-cli-data.json`), OS/editor noise, Claude internal state (`.claude/memory/`, `.claude/agent-memory/`).
+
+**README**
+- Branch table expanded to 4 columns: Branch, Module number, Module title, "What's in this branch".
+- Added git checkout example and incremental structure explanation.
+- Updated Course Completion Artifacts to list both agents and review-suite skill.
+
+#### Changes made to `claude-code-course.html`
+
+**Module 03 (Code vs. Cowork)**
+- Added "The Same Task — Two Surfaces" compare-grid: 6-row table walking the same status-update task through all agent loop steps for both Code and Cowork.
+- Added "Going Deeper: 30 Cowork Best Practices" section with 7-part summary table and PDF link (Nav Toor's compiled guide).
+
+**Module 04 (Why Teams Are Switching)**
+- Replaced unattributed "67% more PRs" blockquote with honest framing: task-type-specific gains, three-way breakdown by category (code-adjacent / document-heavy / cross-tool), no fabricated aggregate.
+
+**Module 05 (Install & First Run)**
+- Expanded `/powerup` highlight-box to 3 paragraphs: what it covers, ~20-30 min timing, do first 3 exercises before Module 6, when to replay.
+
+**Module 06 (Context Rot)**
+- Added annotated before/after transcript using `.transcript-block` CSS showing turn 3 (correct: `console.error`) vs turn 38 (degraded: `console.log`). Demonstrates context rot visually.
+- Rewrote prevention list to explain WHY each strategy works, not just what to do.
+
+**Module 07 (VS Code & Other Surfaces)**
+- Replaced "Demo Workflow" prose with 5-step concrete hands-on task: open done.ts, select function, ask specific question, review diff, run npm test.
+- Replaced 4 sparse "Other Surfaces" bullets with 3 honest cards; Mobile card explicitly corrects the iOS/Dispatch misconception.
+
+**Module 11 (Custom Skills)**
+- Added "What skills are — and are not" highlight-box before Pattern 1: skills are persistent prompts, not background daemons or scheduled runners.
+- Added `/review-suite` to the skills table.
+
+**Module 20 (Headless Mode)**
+- Added 4-row secrets table (ANTHROPIC_API_KEY, NOTIFY_EMAIL_USER, NOTIFY_EMAIL_PASS, NOTIFY_EMAIL_TO) with pointer to `.github/workflows/README.md`.
+
+**Lab pages (A, B, C)**
+- Time estimates changed from single optimistic numbers to "MVP X hrs · Full Y hrs" with honest breakdown highlight-boxes explaining what MVP vs. full pass requires.
+
+**Module 22 (Team Operating System)**
+- Added "Cowork Reference: 30 Best Practices" section: implementation checklist table (Today/This week/This month/Monthly) + cowork-box highlighting practices 18–22 as the gap most teams miss, with PDF link.
+
+#### What was decided and why
+
+- **Honest lab estimates over aspirational ones**: Students who hit 8 hours on a "3-hour lab" lose confidence. MVP/Full framing resets expectations without devaluing the work.
+- **Skills-are-prompts callout**: The most common misconception from early feedback was treating skills as background automations. One highlight-box prevents hours of debugging confusion.
+- **Two agents in the starter repo**: A single agent demonstrates persistence; two agents with an orchestration skill demonstrate the handoff pattern that is central to Level 4. The review-suite skill is the capstone-level demonstration of context:fork + parallel dispatch.
+- **Self-contained plugin skills**: Students copying plugin examples into their own projects were getting broken references. Self-containment removes that failure mode entirely.
+- **30 Best Practices integrated into two modules**: Module 03 is the Cowork entry point (first exposure); Module 22 is the synthesis point (where operating discipline is discussed). Both placements serve a different reader stage.
