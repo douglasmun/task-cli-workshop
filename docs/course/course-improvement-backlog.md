@@ -149,3 +149,43 @@ The course had three categories of problem:
 - **Two agents in the starter repo**: A single agent demonstrates persistence; two agents with an orchestration skill demonstrate the handoff pattern that is central to Level 4. The review-suite skill is the capstone-level demonstration of context:fork + parallel dispatch.
 - **Self-contained plugin skills**: Students copying plugin examples into their own projects were getting broken references. Self-containment removes that failure mode entirely.
 - **30 Best Practices integrated into two modules**: Module 03 is the Cowork entry point (first exposure); Module 22 is the synthesis point (where operating discipline is discussed). Both placements serve a different reader stage.
+
+---
+
+### Session 3 — May 2026 (Second Audit + Fix Pass)
+
+**Scope:** Fresh hard audit (48 items identified, 36 false alarms after cross-check). 11 real items fixed across two sub-sessions.
+
+#### CCI items resolved this session
+
+| CCI | Fix applied |
+|-----|------------|
+| CCI-006 | Added red-bordered security card to Lab C before the code skeleton: only scan networks you own, no remote pipe-to-bash, least-privilege MCP scope, Docker is mandatory not optional |
+| CCI-007 | Three skill patterns (static / $ARGUMENTS / context:fork) already existed — confirmed resolved from Session 2 |
+| CCI-008 | Full settings.json schema + hook scripts already existed — confirmed resolved from Session 2 |
+| CCI-011 | Added 6-row CI preflight checklist to Module 20: ANTHROPIC_API_KEY, GITHUB_TOKEN write permission, fork PR secret block, budget cap, exit code semantics, watch first run live |
+| CCI-012 | Replaced thin cowork-box in Module 21 with full Cowork plugin worked example: folder structure, plugin.json, SKILL.md, install steps, Plugin Create alternative, note on how Cowork frontmatter differs from Code |
+| CCI-014 | Added 10-row capstone evidence table to Rubric page: one row per requirement with expected file path and pass criteria |
+| CCI-016 | Added 5-row artifact taxonomy table to Rubric page: skill / slash command / agent / hook / plugin — what-it-is, how-invoked, Cowork equivalent |
+
+#### Additional fixes from second-audit items (not in original CCI list)
+
+| Item | Fix applied |
+|------|------------|
+| context:fork vs agent: distinction muddled | Added highlight-box in Module 11 Pattern 3: explains the two fields are independent, covers fork-without-agent and agent-without-fork, states when fork+Explore is the sweet spot |
+| Module 15 hooks — /hooks UI flow missing | Added step-by-step /hooks UI walkthrough for both checkpoint hooks (PostToolUse prettier + PreToolUse block) with exact commands and exit code semantics |
+| Module 06 cowork-box missing model selection | Added Cowork model selection note: Sonnet default, Opus on Max/Enterprise, Haiku auto-selected for read-only sub-agent steps |
+| Unattributed "27%" stat | Replaced with honest framing about work-category-specific gains |
+| "100+ skills" in Key Specs | Replaced with accurate list of 11 role-specific plugins |
+| opusplan casing inconsistency | Lowercased matrix cell label to match all other uses |
+| Lab A/B prerequisites unstated | Added note-box before time estimate on both lab pages listing required skills, libraries, and where sample files live |
+| FAQ "Does it work offline?" oversimplified | Replaced with accurate answer: default needs API, enterprise runs inside VPC via Bedrock/Vertex/Foundry, air-gapped not supported |
+| Starter repo unpushed commit | Pushed to origin/main |
+
+#### CCI items confirmed already resolved (no action needed)
+
+CCI-001 (tooling table), CCI-003 (capstone tracks), CCI-004 (offline fallbacks), CCI-005 (MVP lab estimates), CCI-007 (skill patterns), CCI-008 (hook schema), CCI-009 (memory gitignore), CCI-010 (local install scope), CCI-013 (copy progress button), CCI-017 (high contrast + print), CCI-018 (last verified date), CCI-019 (command surface filters), CCI-020 (Bun fallback in README).
+
+#### CCI items remaining open after Session 3
+
+None of the original 20 CCI items remain unaddressed. The backlog is clear.
