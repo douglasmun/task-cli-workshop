@@ -3,6 +3,7 @@ name: deep-research
 description: Research a topic thoroughly across the codebase
 tools: [Read, Grep, Glob, Bash]
 context: fork
+agent: Explore
 ---
 Research $ARGUMENTS thoroughly:
 1. Find all relevant files using Glob and Grep.

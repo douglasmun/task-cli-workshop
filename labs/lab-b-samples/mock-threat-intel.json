@@ -3,12 +3,60 @@
     "type": "ip",
     "value": "198.51.100.42",
     "confidence": "HIGH",
-    "tags": ["c2", "ransomware"]
+    "tags": ["c2", "ransomware", "ironlock"]
+  },
+  {
+    "type": "domain",
+    "value": "update-telemetry.health",
+    "confidence": "HIGH",
+    "tags": ["c2", "ironlock", "healthcare-targeting"]
+  },
+  {
+    "type": "domain",
+    "value": "cdn-metrics.io",
+    "confidence": "MODERATE",
+    "tags": ["c2", "ironlock"]
+  },
+  {
+    "type": "hash",
+    "value": "7f3a1c9e2b84d056f3a1c9e2b84d056f3a1c9e2b84d056f3a1c9e2b84d0561a",
+    "confidence": "HIGH",
+    "tags": ["dropper", "ironlock", "ransomware"]
+  },
+  {
+    "type": "domain",
+    "value": "packages-registry.workers.dev",
+    "confidence": "HIGH",
+    "tags": ["supply-chain", "exfil", "npm-compromise"]
+  },
+  {
+    "type": "ip",
+    "value": "198.51.100.77",
+    "confidence": "MODERATE",
+    "tags": ["c2", "ta-phantom", "financial-sector"]
   },
   {
     "type": "domain",
     "value": "update-cdn.example-bad.net",
     "confidence": "MODERATE",
     "tags": ["c2", "phishing", "ta-phantom"]
+  },
+  {
+    "type": "hash",
+    "value": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+    "confidence": "LOW",
+    "tags": ["suspected-loader", "unconfirmed"]
+  },
+  {
+    "type": "url",
+    "value": "https://silkthread-c2.cloudstore-cdn.net/beacon",
+    "confidence": "HIGH",
+    "tags": ["c2", "jade-cicada", "apt-sg41", "silkthread"]
+  },
+  {
+    "type": "ip",
+    "value": "203.0.113.91",
+    "confidence": "LOW",
+    "tags": ["suspected-proxy", "residential-proxy", "credential-stuffing"]
   }
 ]
