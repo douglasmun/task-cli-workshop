@@ -3,6 +3,10 @@
 A CLI task manager built progressively across the
 [Claude Code + Cowork Course](https://douglasmun.github.io/claude-code-course.html).
 
+> **Workshop attendee?** Start with **[HOMEWORK.md](HOMEWORK.md)** — how to replay
+> every demo at your own pace. Presenters: see **[WORKSHOP.md](WORKSHOP.md)** for
+> the timed run sheet.
+
 ## Milestone Branches
 
 Each branch is a reference checkpoint for a specific course module.
