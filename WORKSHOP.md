@@ -16,7 +16,7 @@ This repo is the demo stage. It is a clone of the `task-cli` course starter
 git checkout workshop-demo      # the seeded branch
 npm install                     # so tests/build run if asked
 
-# Seed the review scenario as an UNCOMMITTED change (what /workflows reviews):
+# Seed the review scenario as an UNCOMMITTED change (what the review reads):
 cp workshop-seed.priority.ts.tmpl src/commands/priority.ts
 git add -N src/commands/priority.ts   # intent-to-add: makes it visible to `git diff`
 git diff --stat                        # confirm priority.ts shows in the diff
@@ -28,12 +28,20 @@ git diff --stat                        # confirm priority.ts shows in the diff
 **Pre-run the slow demo once** so you can fall back to a finished result if the
 live run drags or the network hiccups:
 
-```bash
+```
 claude
-/workflows review-changes       # let it finish once; keep the terminal
+# then, as a prompt (NOT a slash command):
+Use a workflow to review the uncommitted changes.
+# approve the "Run a dynamic workflow?" dialog, let it finish, keep the terminal
 ```
 
+> `/workflows` is a **progress viewer**, not a launcher — you can't type
+> `/workflows review-changes`. You ask Claude in plain language and it finds
+> `.claude/workflows/review-changes.js`, then shows an approval dialog. Open
+> `/workflows` *after* it starts to watch the live tree.
+
 Keep a recorded GIF of that run as a backup (see `docs/` if you captured one).
+A finished capture already lives at `docs/review-backup.md`.
 
 ---
 
@@ -72,14 +80,21 @@ Use the Explore agent to map how a command flows from CLI to the data file.
 
 ### 30–45 min · The Max-tier advanced block (centerpiece)
 The seeded `priority.ts` has three planted problems — one per review dimension.
+Launch the workflow with a **prompt** (not a slash command):
 ```
-/workflows review-changes        # deterministic multi-agent review of the diff
-/workflows                       # show the live progress tree in another view
+Use a workflow to review the uncommitted changes.
+```
+Approve the "Run a dynamic workflow?" dialog. Then, in another view:
+```
+/workflows                       # live progress tree — populates once it's running
 ```
 - Expect it to surface: a **correctness** off-by-one, an **architecture**
   violation (direct FS write bypassing the store), and a **test-coverage** gap.
-- Explain: `pipeline()` (no barrier) + adversarial verify (skeptics refute each
-  finding). Contrast with the model-driven `/review-suite` skill.
+- Talk track: `/workflows` is the *viewer*; Claude invokes the workflow from your
+  prompt (it reads `.claude/workflows/review-changes.js`). Explain `pipeline()`
+  (no barrier) + adversarial verify (skeptics refute each finding). Contrast with
+  the model-driven `/review-suite` skill.
+- If the live run drags, fall back to `docs/review-backup.md` (a finished capture).
 - Then the reasoning knobs:
 ```
 /effort high                     # low / medium / high / xhigh / max / auto

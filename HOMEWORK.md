@@ -53,9 +53,15 @@ Seed the planted review scenario, then let the multi-agent review find it:
 cp workshop-seed.priority.ts.tmpl src/commands/priority.ts
 git add -N src/commands/priority.ts     # makes it visible to `git diff`
 ```
+Then, inside `claude`, launch it with a **prompt** (there is no
+`/workflows review-changes` command — `/workflows` is only the progress viewer):
 ```
-/workflows review-changes        # deterministic multi-agent review
-/workflows                       # watch the live progress tree
+Use a workflow to review the uncommitted changes.
+```
+Approve the "Run a dynamic workflow?" dialog. Claude finds
+`.claude/workflows/review-changes.js` and runs it. Watch progress with:
+```
+/workflows                       # live progress tree — populates once it's running
 ```
 It should surface **three** issues in `priority.ts` — an off-by-one, an
 architecture violation (direct file write bypassing the store), and a missing
