@@ -1,0 +1,654 @@
+<title>Claude Code CLI — Power-User Workshop</title>
+<meta name="description" content="A 60-minute live-demo deck for the Claude Code CLI power-user workshop.">
+<style>
+:root {
+  --ground: #1A1614;
+  --surface: #221D1A;
+  --surface-2: #2B2420;
+  --line: #3A302B;
+  --ink: #F2EBE3;
+  --ink-soft: #C7B9AD;
+  --ink-mute: #8C7D72;
+  --coral: #D97757;
+  --coral-bright: #E88E6F;
+  --sage: #A3B072;
+  --amber: #E0AE52;
+  --shadow: rgba(0,0,0,0.5);
+  --dot-r: #E06A54; --dot-y: #E0B04A; --dot-g: #7FB06A;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --ground: #EDE6DC;
+    --surface: #F7F2EA;
+    --surface-2: #FFFFFF;
+    --line: #DED3C6;
+    --ink: #2A2320;
+    --ink-soft: #55483F;
+    --ink-mute: #8A7B6F;
+    --coral: #C25E3E;
+    --coral-bright: #B0512F;
+    --sage: #6E7C40;
+    --amber: #B07E23;
+    --shadow: rgba(90,70,55,0.18);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #1A1614; --surface: #221D1A; --surface-2: #2B2420; --line: #3A302B;
+  --ink: #F2EBE3; --ink-soft: #C7B9AD; --ink-mute: #8C7D72;
+  --coral: #D97757; --coral-bright: #E88E6F; --sage: #A3B072; --amber: #E0AE52;
+  --shadow: rgba(0,0,0,0.5);
+}
+:root[data-theme="light"] {
+  --ground: #EDE6DC; --surface: #F7F2EA; --surface-2: #FFFFFF; --line: #DED3C6;
+  --ink: #2A2320; --ink-soft: #55483F; --ink-mute: #8A7B6F;
+  --coral: #C25E3E; --coral-bright: #B0512F; --sage: #6E7C40; --amber: #B07E23;
+  --shadow: rgba(90,70,55,0.18);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 800px at 80% -10%, color-mix(in srgb, var(--coral) 10%, transparent), transparent 60%),
+    var(--ground);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: clamp(0.5rem, 2vw, 2rem);
+  overflow: hidden;
+}
+
+/* ---- Serif display face: robust warm-serif stack ---- */
+.display {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.mono {
+  font-family: ui-monospace, "SF Mono", SFMono-Regular, "JetBrains Mono", Menlo, Monaco, "Cascadia Code", Consolas, monospace;
+}
+
+/* ---- Terminal frame ---- */
+.term {
+  width: min(1180px, 100%);
+  height: min(720px, 92vh);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 24px 70px -20px var(--shadow), 0 2px 0 color-mix(in srgb, var(--ink) 4%, transparent) inset;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  background: color-mix(in srgb, var(--surface) 80%, var(--ground));
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+  font-size: 0.8rem;
+}
+.dots { display: flex; gap: 0.45rem; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot.r { background: var(--dot-r); }
+.dot.y { background: var(--dot-y); }
+.dot.g { background: var(--dot-g); }
+.tbtitle {
+  color: var(--ink-mute);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+  text-align: center;
+}
+.tbtitle b { color: var(--ink-soft); font-weight: 600; }
+.clock {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--coral);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+.theme-btn {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-mute);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  padding: 0.25rem 0.4rem;
+}
+.theme-btn:hover { color: var(--ink); border-color: var(--coral); }
+
+/* ---- Body: rail + stage ---- */
+.body { flex: 1 1 auto; display: flex; min-height: 0; }
+.rail {
+  flex: 0 0 232px;
+  border-right: 1px solid var(--line);
+  padding: 1rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: color-mix(in srgb, var(--surface) 88%, var(--ground));
+  overflow: hidden;
+}
+.rail-h {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding: 0 0.35rem 0.5rem;
+}
+.rail-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding: 0.34rem 0.4rem;
+  border-radius: 7px;
+  font-size: 0.78rem;
+  color: var(--ink-mute);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s, color 0.15s;
+}
+.rail-item:hover { color: var(--ink-soft); background: color-mix(in srgb, var(--coral) 8%, transparent); }
+.rail-item .rk {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.66rem;
+  color: var(--ink-mute);
+  flex: 0 0 auto;
+  width: 2.5em;
+  font-variant-numeric: tabular-nums;
+}
+.rail-item.active {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--coral) 15%, transparent);
+  border-color: color-mix(in srgb, var(--coral) 40%, transparent);
+}
+.rail-item.active .rk { color: var(--coral); }
+.rail-item.done .rk::before { content: "✓ "; color: var(--sage); }
+
+.stage {
+  flex: 1 1 auto;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: clamp(1.4rem, 3.2vw, 2.6rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.32s ease, transform 0.32s ease;
+  overflow-y: auto;
+}
+.slide.current { opacity: 1; transform: none; pointer-events: auto; }
+
+.eyebrow {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.eyebrow::before { content: "▍"; color: var(--coral); }
+h1.slide-title {
+  font-size: clamp(1.9rem, 4.2vw, 3rem);
+  margin: 0;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+h2.slide-title {
+  font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+  margin: 0;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.lede {
+  font-size: clamp(1rem, 1.6vw, 1.18rem);
+  color: var(--ink-soft);
+  max-width: 62ch;
+  line-height: 1.5;
+  margin: 0;
+}
+/* "what this is / why it matters" line right under the title */
+.context {
+  font-size: clamp(0.92rem, 1.45vw, 1.05rem);
+  color: var(--ink-soft);
+  max-width: 66ch;
+  line-height: 1.5;
+  margin: 0;
+  padding-left: 0.9rem;
+  border-left: 2px solid color-mix(in srgb, var(--coral) 55%, transparent);
+}
+.context b { color: var(--ink); font-weight: 600; }
+/* inline annotation to the right of a command, explains what you'll SEE */
+.ann { color: var(--sage); }
+/* bottom takeaway strip */
+.takeaway {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.85rem;
+  background: color-mix(in srgb, var(--coral) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--coral) 32%, transparent);
+  border-radius: 8px;
+  font-size: clamp(0.88rem, 1.4vw, 1rem);
+  color: var(--ink);
+  line-height: 1.4;
+}
+.takeaway::before {
+  content: "TAKEAWAY";
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--coral);
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin-top: 0.15rem;
+}
+.takeaway b { color: var(--coral); font-weight: 600; }
+ul.points { list-style: none; margin: 0.2rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; max-width: 68ch; }
+ul.points li {
+  position: relative;
+  padding-left: 1.5rem;
+  font-size: clamp(0.95rem, 1.5vw, 1.08rem);
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+ul.points li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--coral);
+  font-family: ui-monospace, monospace;
+}
+ul.points li b { color: var(--ink); font-weight: 600; }
+strong.hl { color: var(--coral); font-weight: 600; }
+
+/* code / terminal snippet */
+.snip {
+  background: var(--ground);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.snip pre { margin: 0; }
+.snip code, .cmdline {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: clamp(0.8rem, 1.25vw, 0.96rem);
+  line-height: 1.65;
+  color: var(--ink);
+  white-space: pre;
+}
+.cmt { color: var(--ink-mute); }
+.prompt { color: var(--sage); }
+.tok-cmd { color: var(--coral); }
+.tok-flag { color: var(--amber); }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
+@media (max-width: 780px) { .two { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+}
+.card h3 { margin: 0 0 0.3rem; font-size: 0.95rem; color: var(--ink); }
+.card p { margin: 0; font-size: 0.88rem; color: var(--ink-soft); line-height: 1.45; }
+.card .tag {
+  font-family: ui-monospace, monospace; font-size: 0.66rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--coral); display: block; margin-bottom: 0.35rem;
+}
+
+/* loop diagram */
+.loop { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.4rem; }
+.loop .node {
+  font-family: ui-monospace, monospace;
+  font-size: clamp(0.85rem, 1.6vw, 1.15rem);
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--ink);
+}
+.loop .node.act { border-color: color-mix(in srgb, var(--coral) 50%, transparent); color: var(--coral); }
+.loop .arr { color: var(--ink-mute); font-family: monospace; }
+
+table.scenario { border-collapse: collapse; width: 100%; max-width: 68ch; font-size: 0.9rem; }
+table.scenario th, table.scenario td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.scenario th { color: var(--ink-mute); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
+table.scenario td:first-child { color: var(--coral); font-family: ui-monospace, monospace; font-size: 0.82rem; white-space: nowrap; }
+table.scenario td b { color: var(--ink); }
+table.scenario code { font-family: ui-monospace, monospace; font-size: 0.86em; color: var(--amber); }
+
+.kbd {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8em;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 0.08em 0.42em;
+  color: var(--ink);
+}
+
+.big-quote {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  line-height: 1.15;
+  max-width: 20ch;
+  text-wrap: balance;
+  margin: 0;
+}
+.big-quote em { color: var(--coral); font-style: normal; }
+
+.footline {
+  margin-top: auto;
+  padding-top: 0.8rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--ink-mute);
+  font-family: ui-monospace, monospace;
+}
+.footline .flag { color: var(--amber); }
+
+/* bottom bar */
+.footer {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 80%, var(--ground));
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--ink-mute);
+}
+.footer .nav-hint .kb { color: var(--ink-soft); }
+.progressbar { flex: 1 1 auto; height: 3px; background: var(--line); border-radius: 3px; margin: 0 1rem; overflow: hidden; }
+.progressbar > i { display: block; height: 100%; background: var(--coral); width: 0; transition: width 0.32s ease; }
+.count { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  .slide, .progressbar > i { transition: none; }
+}
+@media (max-width: 680px) {
+  .rail { display: none; }
+  .term { height: 94vh; }
+}
+</style>
+
+<div class="term">
+  <div class="titlebar">
+    <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+    <span class="tbtitle mono">douglasmun@task-cli-workshop — <b id="tb-seg">frame</b> · claude</span>
+    <span class="clock" id="clock">00:00</span>
+    <button class="theme-btn" id="theme-btn" title="Toggle theme" aria-label="Toggle light/dark theme">◐</button>
+  </div>
+
+  <div class="body">
+    <nav class="rail" id="rail">
+      <div class="rail-h">run sheet · 60 min</div>
+      <!-- rail items injected by JS -->
+    </nav>
+
+    <div class="stage" id="stage">
+
+      <!-- 0 · TITLE -->
+      <section class="slide" data-seg="intro" data-min="0">
+        <div class="eyebrow mono">live demo · CLI v2.1.211 · 60 minutes</div>
+        <h1 class="slide-title display">Claude Code CLI<br>Power-User Workshop</h1>
+        <p class="context"><b>What this hour is:</b> six live demos in one repo, each showing a habit that separates people who <em>run prompts</em> from people who <strong class="hl">drive an agent</strong>. No lab in the room — you replay everything afterward from the same repo.</p>
+        <div class="snip"><pre><code><span class="prompt">$</span> git clone https://github.com/douglasmun/task-cli-workshop.git
+<span class="prompt">$</span> cd task-cli-workshop && <span class="tok-cmd">claude</span>   <span class="ann"># ← opens a Claude session in the repo</span>
+<span class="cmt"># This public repo IS the workshop. Every demo below lives here.</span></code></pre></div>
+        <div class="takeaway">You need a paid plan (the advanced block shines on <b>Max</b>). Everything else runs on any tier.</div>
+      </section>
+
+      <!-- 1 · FRAME -->
+      <section class="slide" data-seg="frame" data-min="0">
+        <div class="eyebrow mono">0–5 min · frame</div>
+        <h2 class="slide-title display">One loop under every demo</h2>
+        <p class="context"><b>Why this slide:</b> an expert doesn't prompt harder — they close the same loop deliberately, every time. Each of the six demos is just one of these four steps done well. Spotting the loop is the mental model to carry home.</p>
+        <div class="loop">
+          <span class="node">Perceive</span><span class="arr">→</span>
+          <span class="node">Reason</span><span class="arr">→</span>
+          <span class="node act">Act</span><span class="arr">→</span>
+          <span class="node">Observe</span><span class="arr">↺</span>
+        </div>
+        <ul class="points">
+          <li><b>Perceive</b> — CLAUDE.md, the repo, and the git diff give Claude grounding. <span class="ann">(demo 2)</span></li>
+          <li><b>Reason</b> — plan mode makes the thinking visible <em>before</em> any edit lands. <span class="ann">(demo 2)</span></li>
+          <li><b>Act</b> — skills, subagents, and workflows do the actual work. <span class="ann">(demos 3–4)</span></li>
+          <li><b>Observe</b> — hooks, tests, and adversarial review verify the result. <span class="ann">(demos 4–5)</span></li>
+        </ul>
+        <div class="takeaway">The gap between casual and expert use isn't better prompts — it's <b>closing the loop on purpose</b>.</div>
+      </section>
+
+      <!-- 2 · MEMORY + PLAN -->
+      <section class="slide" data-seg="memory" data-min="5">
+        <div class="eyebrow mono">5–15 min · memory + plan mode · highest ROI</div>
+        <h2 class="slide-title display">Give it memory. Make it plan.</h2>
+        <p class="context"><b>The two highest-ROI habits.</b> <b>CLAUDE.md</b> is a file at your repo root that Claude reads every session — durable memory that survives context compaction. <b>Plan mode</b> forces Claude to propose its steps before touching any file.</p>
+        <div class="two">
+          <div>
+            <div class="snip"><pre><code><span class="prompt">$</span> <span class="tok-cmd">bat</span> CLAUDE.md   <span class="ann"># show the project's memory</span>
+<span class="cmt"># it holds: the layered-architecture rule,</span>
+<span class="cmt"># and @docs/architecture.md (an auto-loaded ref)</span></code></pre></div>
+            <p class="context" style="border-color:color-mix(in srgb,var(--sage) 55%,transparent);margin-top:0.7rem">Read once per session, no re-explaining. That layered rule is exactly what the review demo catches a violation of later.</p>
+          </div>
+          <div>
+            <div class="snip"><pre><code><span class="cmt"># inside claude, press:</span>
+<span class="kbd">Shift</span>+<span class="kbd">Tab</span>   <span class="ann"># cycle into plan mode</span>
+
+Add a <span class="tok-flag">--due &lt;date&gt;</span> flag to the add
+command, wired through the store.
+<span class="cmt"># → Claude shows a PLAN first, edits nothing yet</span></code></pre></div>
+            <p class="context" style="border-color:color-mix(in srgb,var(--sage) 55%,transparent);margin-top:0.7rem">Plan mode = <strong class="hl">Reason before Act</strong>. You approve the plan before a single line changes.</p>
+          </div>
+        </div>
+        <div class="takeaway">Memory + plan mode is the habit dabblers skip — and the one that pays back fastest.</div>
+      </section>
+
+      <!-- 3 · SKILLS + SUBAGENTS -->
+      <section class="slide" data-seg="skills" data-min="15">
+        <div class="eyebrow mono">15–30 min · skills + subagents · force multipliers</div>
+        <h2 class="slide-title display">Package the repeatable. Delegate the rest.</h2>
+        <p class="context"><b>Skills</b> are reusable prompts saved in <span class="mono">.claude/skills/</span> and invoked as <span class="mono">/name</span> — codify a workflow once, run it forever. <b>Subagents</b> are separate Claude instances you hand a scoped job, keeping your main context clean.</p>
+        <div class="snip"><pre><code><span class="prompt">/</span><span class="tok-cmd">skills</span>                       <span class="ann"># list this repo's skills</span>
+<span class="prompt">/</span><span class="tok-cmd">add-feature</span> list tasks by priority   <span class="ann"># a skill taking $ARGUMENTS</span>
+
+<span class="cmt"># hand a read-only investigation to a subagent:</span>
+Use the <span class="tok-flag">Explore</span> agent to map how a command
+flows from CLI to the data file.
+<span class="cmt"># → runs in the background; your main chat stays uncluttered</span></code></pre></div>
+        <ul class="points">
+          <li><b>Explore is read-only</b> — it can search and read but never edit, so it's safe to fan out. It inherits your session model (<em>capped at Opus</em>).</li>
+          <li>Subagents now run <strong class="hl">in the background by default</strong>, nest up to 5 deep, and can auto-commit / push / open a PR.</li>
+        </ul>
+        <div class="takeaway">A skill turns a good prompt into a reusable command; a subagent keeps big jobs <b>out of your main context</b>.</div>
+      </section>
+
+      <!-- 4 · CENTERPIECE -->
+      <section class="slide" data-seg="workflows" data-min="30">
+        <div class="eyebrow mono">30–45 min · the max-tier block · centerpiece</div>
+        <h2 class="slide-title display">Deterministic multi-agent review</h2>
+        <p class="context"><b>A workflow is a script</b> (<span class="mono">.claude/workflows/*.js</span>) that fans out many subagents in a fixed order — same steps every run, unlike a normal chat. This one reviews the uncommitted <span class="mono" style="color:var(--amber)">priority.ts</span>, which has <b>three planted bugs</b>, one per review dimension.</p>
+        <div class="snip"><pre><code><span class="cmt"># IMPORTANT: /workflows is a VIEWER, not a launcher.</span>
+<span class="cmt"># You can't type "/workflows review-changes". Instead, ask:</span>
+Use a workflow to review the uncommitted changes.
+<span class="cmt"># → approve the "Run a dynamic workflow?" dialog</span>
+
+<span class="prompt">/</span><span class="tok-cmd">workflows</span>      <span class="ann"># now open the viewer to watch the live agent tree</span></code></pre></div>
+        <ul class="points">
+          <li>It should surface all three: a <b>correctness</b> off-by-one, an <b>architecture</b> violation (writes the file directly, bypassing the store), and a <b>missing test</b>.</li>
+          <li><b>How it's fast:</b> a <span class="mono">pipeline</span> with no barrier — a finding starts being verified while the next dimension is still being reviewed.</li>
+          <li><b>Why you trust it:</b> each finding faces skeptic agents that try to <em>refute</em> it; only survivors are confirmed. (Contrast the model-driven <span class="mono">/review-suite</span> skill.)</li>
+          <li><b>Reasoning knobs:</b> <span class="kbd">/effort high</span> spends more thinking; <span class="kbd">/model opusplan</span> = Opus plans, Sonnet executes.</li>
+        </ul>
+        <div class="takeaway">Deterministic + adversarially verified = a review you can <b>trust to run the same way every time</b>. If it drags, fall back to <span class="mono">docs/review-backup.md</span>.</div>
+      </section>
+
+      <!-- 5 · SAFETY -->
+      <section class="slide" data-seg="safety" data-min="45">
+        <div class="eyebrow mono">45–55 min · safety + governance · so it scales</div>
+        <h2 class="slide-title display">Guardrails, not vibes</h2>
+        <p class="context"><b>Hooks are shell commands the CLI runs automatically</b> at defined moments — <b>PostToolUse</b> fires after Claude edits a file, <b>PreToolUse</b> fires before it runs a command (and can block it). This is how you make good behavior deterministic instead of hoping for it.</p>
+        <div class="snip"><pre><code><span class="prompt">$</span> <span class="tok-cmd">bat</span> .claude/settings.json           <span class="ann"># where hooks are wired up</span>
+<span class="prompt">$</span> <span class="tok-cmd">bat</span> .claude/hooks/format-file.sh     <span class="ann"># auto-formats after every edit</span>
+<span class="prompt">$</span> <span class="tok-cmd">bat</span> .claude/hooks/block-dangerous-bash.sh  <span class="ann"># blocks risky commands</span></code></pre></div>
+        <ul class="points">
+          <li><b>Live proof:</b> make any edit in a session → the format hook fires on its own, no prompt. That's the loop's <em>Observe</em> step, automated.</li>
+          <li><b>Permission model:</b> Claude asks before risky actions. <span class="kbd">claude --permission-mode auto</span> loosens that for trusted, sandboxed work.</li>
+        </ul>
+        <div class="takeaway">Expert use scales on <b>deterministic guardrails</b> — the hooks catch what attention won't.</div>
+      </section>
+
+      <!-- 6 · WRAP -->
+      <section class="slide" data-seg="wrap" data-min="55">
+        <div class="eyebrow mono">55–60 min · wrap + homework</div>
+        <p class="big-quote display">Trust, but <em>verify.</em></p>
+        <p class="context"><b>The one thing to keep:</b> every capability today — memory, plan mode, subagents, workflows, hooks — exists to let you delegate more <em>and</em> verify more. Power without the verify half is just faster mistakes.</p>
+        <ul class="points">
+          <li><b>Main homework — the course.</b> Levels 3–4 map directly to what you saw today.</li>
+          <li>Keep the <b>cheat sheet</b> open as your daily reference.</li>
+          <li>This repo is <strong class="hl">public</strong> — clone it and replay every demo at your own pace.</li>
+        </ul>
+        <div class="snip"><pre><code><span class="cmt"># homework</span>
+https://douglasmun.github.io/claude-code-course.html
+https://douglasmun.github.io/claude-code-index.html   <span class="cmt"># cheat sheet</span></code></pre></div>
+      </section>
+
+      <!-- 7 · APPENDIX: seeded scenario -->
+      <section class="slide" data-seg="appendix" data-min="30">
+        <div class="eyebrow mono">appendix · what the review should catch</div>
+        <h2 class="slide-title display">The seeded scenario</h2>
+        <p class="context"><b>How the centerpiece demo is rigged to work.</b> The file <span class="mono" style="color:var(--amber)">src/commands/priority.ts</span> is added but <b>never committed</b> — the workflow reviews the <em>uncommitted</em> diff, so the file must stay in <span class="mono">git add -N</span> state. It hides three deliberate defects, one per review dimension.</p>
+        <table class="scenario">
+          <thead><tr><th>Dimension</th><th>Planted issue</th></tr></thead>
+          <tbody>
+            <tr><td>Correctness</td><td><code>priority - 1</code> off-by-one — <b><code>--priority 1</code></b> becomes 0; top tier unreachable.</td></tr>
+            <tr><td>Architecture</td><td>Direct <code>fs.writeFileSync</code> to the store file, bypassing <b><code>saveTasks()</code></b> — violates the layered rule in CLAUDE.md.</td></tr>
+            <tr><td>Test coverage</td><td>No <b><code>__tests__/priority.test.ts</code></b> for the new command.</td></tr>
+          </tbody>
+        </table>
+        <div class="snip"><pre><code><span class="cmt"># reset the stage between runs (regenerate the diff):</span>
+<span class="prompt">$</span> rm -f src/commands/priority.ts
+<span class="prompt">$</span> cp workshop-seed.priority.ts.tmpl src/commands/priority.ts
+<span class="prompt">$</span> git add -N src/commands/priority.ts</code></pre></div>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="nav-hint"><span class="kb">←</span>/<span class="kb">→</span> navigate · <span class="kb">1–8</span> jump · <span class="kb">t</span> theme</span>
+    <span class="progressbar"><i id="pbar"></i></span>
+    <span class="count"><span id="cur">1</span> / <span id="total">8</span></span>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var saved = null;
+  try { saved = localStorage.getItem('cc-deck-theme'); } catch (e) {}
+  if (saved) root.setAttribute('data-theme', saved);
+  function toggleTheme() {
+    var cur = root.getAttribute('data-theme');
+    if (!cur) cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('cc-deck-theme', next); } catch (e) {}
+  }
+  document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var rail = document.getElementById('rail');
+  var tbSeg = document.getElementById('tb-seg');
+  var clock = document.getElementById('clock');
+  var pbar = document.getElementById('pbar');
+  var curEl = document.getElementById('cur');
+  var totalEl = document.getElementById('total');
+  var i = 0;
+  totalEl.textContent = slides.length;
+
+  var labels = ['Title','Frame','Memory + Plan','Skills + Subagents','Review workflow','Safety + Hooks','Wrap + Homework','Appendix'];
+  slides.forEach(function (s, idx) {
+    var item = document.createElement('div');
+    item.className = 'rail-item';
+    var mins = s.getAttribute('data-min');
+    item.innerHTML = '<span class="rk">' + (idx === 0 ? '·' : mins + 'm') + '</span><span>' + labels[idx] + '</span>';
+    item.addEventListener('click', function () { go(idx); });
+    rail.appendChild(item);
+  });
+  var railItems = Array.prototype.slice.call(rail.querySelectorAll('.rail-item'));
+
+  function fmt(t) { var m = Math.floor(t / 60), s = t % 60; return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s; }
+
+  function render() {
+    slides.forEach(function (s, idx) { s.classList.toggle('current', idx === i); });
+    railItems.forEach(function (it, idx) {
+      it.classList.toggle('active', idx === i);
+      it.classList.toggle('done', idx < i && idx !== 0);
+    });
+    tbSeg.textContent = slides[i].getAttribute('data-seg');
+    var mn = parseInt(slides[i].getAttribute('data-min'), 10) || 0;
+    clock.textContent = fmt(mn * 60);
+    pbar.style.width = ((i) / (slides.length - 1) * 100) + '%';
+    curEl.textContent = i + 1;
+  }
+  function go(n) { i = Math.max(0, Math.min(slides.length - 1, n)); render(); }
+  function next() { go(i + 1); }
+  function prev() { go(i - 1); }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { next(); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { prev(); e.preventDefault(); }
+    else if (e.key === 'Home') { go(0); }
+    else if (e.key === 'End') { go(slides.length - 1); }
+    else if (e.key === 't' || e.key === 'T') { toggleTheme(); }
+    else if (/^[1-9]$/.test(e.key)) { go(parseInt(e.key, 10) - 1); }
+  });
+
+  // touch swipe
+  var x0 = null;
+  document.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+    x0 = null;
+  }, { passive: true });
+
+  render();
+})();
+</script>
