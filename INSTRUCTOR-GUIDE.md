@@ -27,6 +27,7 @@ to see them all as steps in one loop: **Perceive → Reason → Act → Observe.
 | CLI **≥ 2.1.211** | `claude --version`. Older builds lack dynamic workflows — the centerpiece won't run. |
 | The deck open full-screen | Projector-ready; `←/→` to navigate, number keys to jump. |
 | Terminal font bumped up | Legible from the back row. |
+| `bat` installed | `brew install bat`; set `export BAT_PAGING=never` so it prints inline. Or swap the `bat` lines below for `cat`. |
 | The seeded scenario staged | See "Before you start" below. |
 | A backup of the slow demo | Pre-run once; keep `docs/review-backup.md` open in a tab. |
 | Network + a paid/Max session | The workflow fans out many agents. |

@@ -28,6 +28,7 @@ By the end of this guide you should be able to:
 | Claude Code CLI **≥ 2.1.211** | Dynamic workflows need a recent build. Check with `claude --version`. If you're on an old npm-global install, see [Troubleshooting](#troubleshooting). |
 | Node.js 20+ and git | `node --version`, `git --version`. |
 | A terminal you're comfortable in | macOS/Linux shown; Windows works via WSL. |
+| `bat` (optional) | Only if you replay the file-display demos verbatim. `brew install bat`; plain `cat` works too. |
 
 ---
 
@@ -179,6 +180,7 @@ diff. If you accidentally commit it, run `git reset HEAD~1` to un-stage.
 | `claude --version` shows an old version (e.g. 2.1.83) | You likely have a deprecated npm-global install shadowing the native one. Remove it: `npm uninstall -g @anthropic-ai/claude-code` (may need `sudo`), ensure `~/.local/bin` is on your `PATH`, open a new terminal, re-check. |
 | Review finds nothing / no diff | The seed isn't in the diff. Re-seed (above) and confirm with `git diff --stat`. |
 | The workflow warns about token usage | Expected — it fans out many subagents. On Max this is comfortable; stop any run with `/workflows` → `x`. |
+| `bat: command not found` | The file-display demos use `bat`. Install it (`brew install bat`) or just use `cat` instead. |
 
 ---
 
