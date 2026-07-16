@@ -26,6 +26,8 @@ The demo was the trailer. The course is the full path.
   subagents, hooks, `/workflows`). Start there if you already dabble.
 - Keep the **cheat sheet** open as your daily reference:
   <https://douglasmun.github.io/claude-code-index.html>
+- Rewatch the session at your own pace with the **slide deck**:
+  <https://douglasmun.github.io/task-cli-workshop/docs/workshop-deck.html>
 
 ## Replay the demos yourself (in order)
 

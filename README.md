@@ -4,8 +4,9 @@ A CLI task manager built progressively across the
 [Claude Code + Cowork Course](https://douglasmun.github.io/claude-code-course.html).
 
 > **Workshop attendee?** Start with **[HOMEWORK.md](HOMEWORK.md)** — how to replay
-> every demo at your own pace. Presenters: see **[WORKSHOP.md](WORKSHOP.md)** for
-> the timed run sheet.
+> every demo at your own pace. Slides:
+> **[the workshop deck](https://douglasmun.github.io/task-cli-workshop/docs/workshop-deck.html)**.
+> Presenters: see **[WORKSHOP.md](WORKSHOP.md)** for the timed run sheet.
 
 ## Milestone Branches
 
@@ -85,8 +86,9 @@ Reviewers: run `npm test && npm run build` to confirm the code works, then cross
 ## Companion Resources
 
 - [Course Community (GitHub Discussions)](https://github.com/douglasmun/claude-code-course-starter/discussions) — ask questions, share your capstone, get unstuck
+- [Workshop Deck](https://douglasmun.github.io/task-cli-workshop/docs/workshop-deck.html) — the 60-minute live-demo slides
 - [Course](https://douglasmun.github.io/claude-code-course.html)
-- [Cheat Sheet](https://douglasmun.github.io/claude-code-cheatsheet-v1.0.html)
+- [Cheat Sheet](https://douglasmun.github.io/claude-code-index.html)
 - [Capstone Evidence Guide](docs/course/capstone-evidence-guide.md)
 
 ## Community
