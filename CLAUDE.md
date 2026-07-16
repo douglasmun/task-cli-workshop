@@ -38,6 +38,9 @@ See @docs/architecture.md for system boundaries.
 ## MCP
 - `.mcp.json` exposes local project docs and cowork context through a filesystem MCP server.
 
+## Demo tooling
+- The Instructor Guide displays files on stage with `bat` (syntax-highlighted `cat`). Install it with `brew install bat`; set `export BAT_PAGING=never` so output stays inline instead of opening a pager. Plain `cat` works as a fallback.
+
 ## Don't
 - Modify the store path without updating tests
 - Add dependencies without checking `package.json` first
