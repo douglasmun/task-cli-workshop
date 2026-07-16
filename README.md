@@ -3,6 +3,11 @@
 A CLI task manager built progressively across the
 [Claude Code + Cowork Course](https://douglasmun.github.io/claude-code-course.html).
 
+> **Here for the workshop?** Start with the **[Student Guide](STUDENT-GUIDE.md)** and
+> the **[slide deck](https://douglasmun.github.io/task-cli-workshop/docs/workshop-deck.html)**.
+> Presenters: see the **[Instructor Guide](INSTRUCTOR-GUIDE.md)**. The seeded review
+> demo lives on the `workshop-demo` branch.
+
 ## Milestone Branches
 
 Each branch is a reference checkpoint for a specific course module.
@@ -81,8 +86,10 @@ Reviewers: run `npm test && npm run build` to confirm the code works, then cross
 ## Companion Resources
 
 - [Course Community (GitHub Discussions)](https://github.com/douglasmun/claude-code-course-starter/discussions) — ask questions, share your capstone, get unstuck
+- [Workshop Deck](https://douglasmun.github.io/task-cli-workshop/docs/workshop-deck.html) — the 60-minute live-demo slides
+- [Student Guide](STUDENT-GUIDE.md) · [Instructor Guide](INSTRUCTOR-GUIDE.md)
 - [Course](https://douglasmun.github.io/claude-code-course.html)
-- [Cheat Sheet](https://douglasmun.github.io/claude-code-cheatsheet-v1.0.html)
+- [Cheat Sheet](https://douglasmun.github.io/claude-code-index.html)
 - [Capstone Evidence Guide](docs/course/capstone-evidence-guide.md)
 
 ## Community
