@@ -1,0 +1,26 @@
+import fs from "fs";
+import path from "path";
+import { loadTasks } from "../store/tasks";
+
+const STORE_PATH = path.join(process.env.HOME || "~", ".task-cli-data.json");
+
+// Set a priority (1 = highest) on a task by id.
+export function setPriority(id: number, priority: number): void {
+  const tasks = loadTasks();
+  const task = tasks.find((t) => t.id === id);
+  if (!task) {
+    console.error(`Task #${id} not found.`);
+    process.exit(1);
+  }
+
+  // Off-by-one: CLI passes a 1-based level but we store it decremented,
+  // so `--priority 1` silently becomes 0 and the highest tier is unreachable.
+  (task as any).priority = priority - 1;
+
+  // Architecture violation: writes the store file directly instead of going
+  // through saveTasks() in src/store/tasks.ts — the only module allowed to
+  // touch the filesystem.
+  fs.writeFileSync(STORE_PATH, JSON.stringify(tasks, null, 2));
+
+  console.log(`Set priority ${priority} on task #${id}.`);
+}

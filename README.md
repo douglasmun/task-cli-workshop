@@ -3,10 +3,11 @@
 A CLI task manager built progressively across the
 [Claude Code + Cowork Course](https://douglasmun.github.io/claude-code-course.html).
 
-> **Here for the workshop?** Start with the **[Student Guide](STUDENT-GUIDE.md)** and
-> the **[slide deck](https://douglasmun.github.io/task-cli-workshop/docs/workshop-deck.html)**.
-> Presenters: see the **[Instructor Guide](INSTRUCTOR-GUIDE.md)**. The seeded review
-> demo lives on the `workshop-demo` branch.
+> **Workshop attendee?** Start with the **[Student Guide](STUDENT-GUIDE.md)** — how to
+> replay every demo at your own pace. Slides:
+> **[the workshop deck](https://douglasmun.github.io/task-cli-workshop/docs/workshop-deck.html)**.
+> Presenters: see the **[Instructor Guide](INSTRUCTOR-GUIDE.md)** for the timed run
+> sheet and facilitation notes.
 
 ## Milestone Branches
 
