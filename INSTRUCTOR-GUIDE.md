@@ -188,6 +188,31 @@ cp workshop-seed.priority.ts.tmpl src/commands/priority.ts
 git add -N src/commands/priority.ts
 ```
 
+### Also clear the `/add-feature` output (15–30 min segment)
+
+The skills demo — `/add-feature list tasks by priority` — generates a real
+feature into the working tree. Left in place, the 30–45 min workflow reviews it
+*alongside* the seed, and the finding numbers in
+[`docs/review-backup.md`](docs/review-backup.md) no longer line up with what's on
+screen. Clear it in the gap between the two segments:
+
+```bash
+git checkout -- src/index.ts
+rm -f src/commands/listByPriority.ts __tests__/listByPriority.test.ts
+git add -N src/commands/priority.ts
+```
+
+Confirm the stage is clean before launching the review — `git diff --stat` should
+show `src/commands/priority.ts` and nothing else:
+
+```bash
+git status --short     # expect only: A src/commands/priority.ts
+git diff --stat
+```
+
+> Alternative: let `/add-feature` produce its plan and stop there without
+> accepting. Same teaching beat, nothing to clean up.
+
 ---
 
 ## The seeded scenario (what the review should catch)
